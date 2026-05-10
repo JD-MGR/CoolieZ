@@ -6,6 +6,16 @@ public class Employee {
     private long dob;
     private Status status;
     private Role role;
+    private String email;
+
+    public Employee(String name,String email,long dob,Status status,Role role){
+        this.name=name;
+        this.email=email;
+        this.dob=dob;
+        this.status=status;
+        this.role=role;
+    }
+
     public enum Status{
         ACTIVE,IN_ACTIVE
     }
@@ -52,4 +62,12 @@ public class Employee {
     public void setRole(Role role) {
         this.role = role;
     }
+    public void setEmail(String email){
+        this.email=email;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
 }
