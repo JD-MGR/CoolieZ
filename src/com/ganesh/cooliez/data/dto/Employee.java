@@ -7,13 +7,23 @@ public class Employee {
     private Status status;
     private Role role;
     private String email;
+    private String password;
 
-    public Employee(String name,String email,long dob,Status status,Role role){
+    public Employee(String name, String email, String password, long dob, Role role,Status status){
         this.name=name;
         this.email=email;
         this.dob=dob;
-        this.status=status;
+        this.password=password;
         this.role=role;
+        this.status=status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public enum Status{

@@ -1,6 +1,7 @@
 package com.ganesh.cooliez.features.signup;
 
 import com.ganesh.cooliez.data.dto.Employee;
+import com.ganesh.cooliez.data.dto.Task;
 import com.ganesh.cooliez.data.dto.repository.EmployeeRepository;
 
 import java.time.LocalDate;
@@ -19,8 +20,8 @@ public class SignUpModel {
 		this.signUpView = signUpView;
 	}
 
-	public boolean signUp(String name, String email, long dob, Employee.Role role) {
-		Employee employee = new Employee(name, email, dob, Employee.Status.ACTIVE, role);
+	public boolean signUp(String name, String email, String password, long dob, Employee.Role role, Employee.Status status) {
+		Employee employee = new Employee(name, email, password,dob, role,status);
 		return EmployeeRepository.getInstance().saveEmployee(employee);
 	}
 
@@ -44,6 +45,13 @@ public class SignUpModel {
 		Matcher matcher = PATTERN.matcher(email);
 		if(!matcher.matches()){
 			signUpView.display("Email pattern doesn't match !");
+			return false;
+		}
+		return true;
+	}
+	boolean validatePassword(String password) {
+		if(password==null||password.length()<8){
+			signUpView.display("Password cannot be less than 8 characters !");
 			return false;
 		}
 		return true;

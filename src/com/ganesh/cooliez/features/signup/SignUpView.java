@@ -21,15 +21,18 @@ public class SignUpView {
         System.out.println("-----Welcome to SignUp-----");
         String name = promptName();
         String email = promptEmail();
+        String password=promptPassword();
         long dob = promptDob();
         Employee.Role role = promptRole();
+        Employee.Status status= Employee.Status.ACTIVE;
         
-        if (signUpModel.signUp(name, email, dob, role)) {
+        if (signUpModel.signUp(name, email,password, dob, role,status)) {
             System.out.println("Registration Successful for: " + name);
         } else {
             System.out.println("Registration failed. Database error.");
         }
     }
+
 
     public void display(String message){
         System.out.println(message);
@@ -39,9 +42,6 @@ public class SignUpView {
         while(true) {
             System.out.println("Enter your Name : ");
             String name = scanner.nextLine();
-            if (name.trim().isEmpty()) {
-                continue; 
-            }
             if(signUpModel.validateName(name)) return name.trim();
         }
     }
@@ -54,6 +54,13 @@ public class SignUpView {
         }
     }
 
+    private String promptPassword() {
+        while ((true)) {
+            System.out.println("Enter your Password : ");
+            String password= scanner.next();
+            if(signUpModel.validatePassword(password)) return password.trim();
+        }
+    }
     private long promptDob(){
         while(true) {
             System.out.println("Enter your Dob (dd-mm-yyyy): ");
