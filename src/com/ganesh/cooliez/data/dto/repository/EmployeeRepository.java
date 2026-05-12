@@ -1,8 +1,8 @@
 package com.ganesh.cooliez.data.dto.repository;
 
 import com.ganesh.cooliez.data.dto.Employee;
-
 import java.sql.*;
+import java.util.*;
 
 public class EmployeeRepository {
     private static EmployeeRepository instance;
@@ -141,5 +141,116 @@ public class EmployeeRepository {
         }
         return userRole;
     }
+
+    public List<Employee> getAllEmployees() {
+        List<Employee> employees = new ArrayList<>();
+        String query = "SELECT * FROM users where role='EMPLOYEE'";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Employee employee = new Employee(
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        null,
+                        rs.getLong("dob"),
+                        Employee.Role.valueOf(rs.getString("role")),
+                        Employee.Status.valueOf(rs.getString("status"))
+                );
+                employee.setEmployeeId(rs.getLong("employeeId"));
+                employees.add(employee);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching employees: " + e.getMessage());
+        }
+        return employees;
+    }
+
+    public List<Employee> getEmployeeDetails(String email) {
+        List<Employee> employees = new ArrayList<>();
+        String query = "SELECT * FROM users where email=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1,email);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Employee employee = new Employee(
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        null,
+                        rs.getLong("dob"),
+                        Employee.Role.valueOf(rs.getString("role")),
+                        Employee.Status.valueOf(rs.getString("status"))
+                );
+                employee.setEmployeeId(rs.getLong("employeeId"));
+                employees.add(employee);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching employees: " + e.getMessage());
+        }
+        return employees;
+    }
+
+    public List<Employee> getEmployeeDetails(long id) {
+        List<Employee> employees = new ArrayList<>();
+        String query = "SELECT * FROM users where employeeId=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setLong(1,id);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Employee employee = new Employee(
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        null,
+                        rs.getLong("dob"),
+                        Employee.Role.valueOf(rs.getString("role")),
+                        Employee.Status.valueOf(rs.getString("status"))
+                );
+                employee.setEmployeeId(rs.getLong("employeeId"));
+                employees.add(employee);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching employees: " + e.getMessage());
+        }
+        return employees;
+    }
+
+    public Employee getEmployeeStatus(String email) {
+        String query = "select name, employeeId, status, email from users where email=?";
+
+        Employee employee = null;
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name");
+                long employeeId = rs.getLong("employeeId");
+                Employee.Status status = Employee.Status.valueOf(rs.getString("status"));
+                String dbEmail = rs.getString("email");
+                employee = new Employee(employeeId, name, status, dbEmail);
+            }
+        } catch (Exception e) {
+            System.err.println("Error in getEmployeeStatus: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return employee;
+    }
+
+    public boolean changeEmployeeStatus(Employee employee) {
+        String query = "UPDATE users SET status = ? WHERE email = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, employee.getStatus().name());
+            statement.setString(2, employee.getEmail());
+            int affectedRows = statement.executeUpdate();
+            return affectedRows > 0;
+        } catch (Exception e) {
+            System.err.println("Error in changeEmployeeStatus: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 }
+
 

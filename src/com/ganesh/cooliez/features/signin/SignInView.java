@@ -28,10 +28,10 @@ public class SignInView {
         if(signInModel.isUserAllowed(userEmail,userPassword)){
             System.out.println("User logged in Successfully ,");
            if(signInModel.getRole(userEmail).equals(Employee.Role.EMPLOYEE)){
-                homeView.showEmployeeDashboard();
+                homeView.showEmployeeDashboard(userEmail);
            }
            if(signInModel.getRole(userEmail).equals(Employee.Role.MANAGER)){
-               homeView.showManagerDashboard();
+               homeView.showManagerDashboard(userEmail);
            }
         }
          else System.out.println("Sign in failed !");

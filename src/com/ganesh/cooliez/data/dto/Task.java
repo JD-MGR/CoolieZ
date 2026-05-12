@@ -10,7 +10,7 @@ public class Task {
     private long createdAt;
     private long dueDate;
     private long assignedBy;
-    private List<Long> assignedTo;
+    private long assignedTo;
 
     public long getTaskId() {
         return taskId;
@@ -68,11 +68,11 @@ public class Task {
         this.assignedBy = assignedBy;
     }
 
-    public List<Long> getAssignedTo() {
+    public long getAssignedTo() {
         return assignedTo;
     }
 
-    public void setAssignedTo(List<Long> assignedTo) {
+    public void setAssignedTo(long assignedTo) {
         this.assignedTo = assignedTo;
     }
 
