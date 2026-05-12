@@ -6,26 +6,6 @@ public class Employee {
     private long dob;
     private Status status;
     private Role role;
-    private String email;
-    private String password;
-
-    public Employee(String name, String email, String password, long dob, Role role,Status status){
-        this.name=name;
-        this.email=email;
-        this.dob=dob;
-        this.password=password;
-        this.role=role;
-        this.status=status;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public enum Status{
         ACTIVE,IN_ACTIVE
     }
@@ -72,12 +52,4 @@ public class Employee {
     public void setRole(Role role) {
         this.role = role;
     }
-    public void setEmail(String email){
-        this.email=email;
-    }
-
-    public String getEmail(){
-        return email;
-    }
-
 }
