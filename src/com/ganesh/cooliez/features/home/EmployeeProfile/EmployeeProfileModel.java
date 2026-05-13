@@ -17,9 +17,10 @@ public class EmployeeProfileModel {
         employeeProfileView.displayAllEmployees(employeeList);
     }
 
-    public void getEmployeeDetails(String email) {
+    public boolean getEmployeeDetails(String email) {
         List<Employee> employee=employeeRepository.getEmployeeDetails(email);
         employeeProfileView.displayAllEmployees(employee);
+        return !employee.isEmpty();
     }
     public boolean getEmployeeDetails(long id) {
         List<Employee> employee=employeeRepository.getEmployeeDetails(id);
@@ -45,6 +46,7 @@ public class EmployeeProfileModel {
         return false;
     }
 
-    public void deleteEmployeeProfile(long id) {
+    public boolean deleteEmployee(String email) {
+        return employeeRepository.deleteEmployee(email);
     }
 }

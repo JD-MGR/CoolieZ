@@ -65,5 +65,20 @@ public class EmployeeProfileView {
     }
 
     public void promptDeletion() {
+        System.out.println();
+        System.out.println("Enter Employee Email : ");
+        String email= scanner.next();
+        if(employeeProfileModel.getEmployeeDetails(email)){
+            System.out.println("Do you really want to delete this account? (y/n) ");
+            String choice=scanner.next();
+            if(choice.equalsIgnoreCase("y")) {
+                if(employeeProfileModel.deleteEmployee(email))
+                    System.out.println("Employee Deleted Successfully");
+            } else
+                return;
+        }
+    else {
+            System.out.println("Please check if you entered the correct email");
+        }
     }
 }

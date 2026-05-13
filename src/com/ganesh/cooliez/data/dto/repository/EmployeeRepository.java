@@ -251,6 +251,27 @@ public class EmployeeRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean deleteEmployee(String email) {
+        String query="BEGIN;\n" +
+                "\n" +
+                "-- 1. Delete from the child table first using a subquery to find the ID\n" +
+                "DELETE FROM child_table \n" +
+                "WHERE parent_id = (SELECT id FROM parent_table WHERE email = 'user@example.com');\n" +
+                "\n" +
+                "-- 2. Delete the parent row now that the references are gone\n" +
+                "DELETE FROM parent_table \n" +
+                "WHERE email = 'user@example.com';\n" +
+                "\n" +
+                "COMMIT;";
+        try(Connection connection=DatabaseConnection.getConnection();
+            PreparedStatement statement= connection.prepareStatement(query)){
+            statement.setString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
 }
 
 
