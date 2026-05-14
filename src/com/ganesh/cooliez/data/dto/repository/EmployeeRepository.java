@@ -216,6 +216,21 @@ public class EmployeeRepository {
         return employees;
     }
 
+    public long getEmployeeIdByEmail(String email) {
+        String query = "SELECT employeeId FROM users WHERE email = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getLong("employeeId");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching employee ID: " + e.getMessage());
+        }
+        return -1;
+    }
+
     public Employee getEmployeeStatus(String email) {
         String query = "select name, employeeId, status, email from users where email=?";
 
@@ -253,24 +268,50 @@ public class EmployeeRepository {
     }
 
     public boolean deleteEmployee(String email) {
-        String query="BEGIN;\n" +
-                "\n" +
-                "-- 1. Delete from the child table first using a subquery to find the ID\n" +
-                "DELETE FROM child_table \n" +
-                "WHERE parent_id = (SELECT id FROM parent_table WHERE email = 'user@example.com');\n" +
-                "\n" +
-                "-- 2. Delete the parent row now that the references are gone\n" +
-                "DELETE FROM parent_table \n" +
-                "WHERE email = 'user@example.com';\n" +
-                "\n" +
-                "COMMIT;";
-        try(Connection connection=DatabaseConnection.getConnection();
-            PreparedStatement statement= connection.prepareStatement(query)){
-            statement.setString();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        String deleteLogin = "DELETE FROM userLogin WHERE employeeId = (SELECT employeeId FROM users WHERE email = ?)";
+        String deleteUser = "DELETE FROM users WHERE email = ?";
+
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement pstmt1 = conn.prepareStatement(deleteLogin)) {
+                pstmt1.setString(1, email);
+                pstmt1.executeUpdate();
+            }
+
+            try (PreparedStatement pstmt2 = conn.prepareStatement(deleteUser)) {
+                pstmt2.setString(1, email);
+                int affectedRows = pstmt2.executeUpdate();
+                if (affectedRows > 0) {
+                    conn.commit();
+                    return true;
+                } else {
+                    conn.rollback();
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            System.err.println("Error deleting employee: " + e.getMessage());
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return true;
     }
 }
 

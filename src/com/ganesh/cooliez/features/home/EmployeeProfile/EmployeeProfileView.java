@@ -32,8 +32,8 @@ public class EmployeeProfileView {
         }
     }
 
-    public void showEmployeeDetails(String email) {
-        employeeProfileModel.getEmployeeDetails(email);
+    public boolean showEmployeeDetails(String email) {
+        return employeeProfileModel.getEmployeeDetails(email);
     }
 
    
@@ -45,40 +45,5 @@ public class EmployeeProfileView {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy");
         String formattedDate = dateOnly.format(formatter);
         return formattedDate;
-    }
-
-    public void promptUpdate() {
-        System.out.println("Enter Employee email : ");
-        String email=scanner.next();
-        if(employeeProfileModel.getEmployeeStatus(email)) System.out.println("Status Updates Successfully");
-    }
-
-    public boolean changeEmployeeStatus(Employee employee) {
-        System.out.println();
-        System.out.println("Employee Name : "+employee.getName());
-        System.out.println("Employee Id : "+employee.getEmployeeId());
-        System.out.println("Employee Current Status : "+employee.getStatus().toString());
-        System.out.println();
-        System.out.println("Do you want to change the Employee Status ?(y/n)");
-        String choice=scanner.next();
-        return choice.equalsIgnoreCase("y");
-    }
-
-    public void promptDeletion() {
-        System.out.println();
-        System.out.println("Enter Employee Email : ");
-        String email= scanner.next();
-        if(employeeProfileModel.getEmployeeDetails(email)){
-            System.out.println("Do you really want to delete this account? (y/n) ");
-            String choice=scanner.next();
-            if(choice.equalsIgnoreCase("y")) {
-                if(employeeProfileModel.deleteEmployee(email))
-                    System.out.println("Employee Deleted Successfully");
-            } else
-                return;
-        }
-    else {
-            System.out.println("Please check if you entered the correct email");
-        }
     }
 }

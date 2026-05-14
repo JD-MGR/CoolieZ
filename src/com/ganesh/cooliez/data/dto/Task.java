@@ -1,7 +1,5 @@
 package com.ganesh.cooliez.data.dto;
 
-import java.util.List;
-
 public class Task {
     private long taskId;
     private String description;
@@ -9,6 +7,28 @@ public class Task {
     private Status status;
     private long createdAt;
     private long dueDate;
+
+    public Task(String taskName, String description, Status status, long createdAt, long dueDate, long assignedBy, long assignedTo) {
+        this.description = description;
+        this.taskName = taskName;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.dueDate = dueDate;
+        this.assignedBy = assignedBy;
+        this.assignedTo = assignedTo;
+    }
+
+    public Task(long taskId, String description, String taskName, Status status, long createdAt, long dueDate, long assignedBy, long assignedTo) {
+        this.taskId = taskId;
+        this.description = description;
+        this.taskName = taskName;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.dueDate = dueDate;
+        this.assignedBy = assignedBy;
+        this.assignedTo = assignedTo;
+    }
+
     private long assignedBy;
     private long assignedTo;
 
@@ -77,6 +97,6 @@ public class Task {
     }
 
     public enum Status{
-        COMPLETED,INPROGRESS,NOT_COMPLETED
+        COMPLETED,INPROGRESS,CREATED
     }
 }

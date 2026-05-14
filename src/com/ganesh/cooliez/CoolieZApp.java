@@ -45,7 +45,7 @@ public class CoolieZApp {
                     return;
                 }
                 default -> {
-                    System.out.println("Invalid Choice please try again");
+                    System.out.println("Invalid 1Choice please try again");
                 }
             }
         }

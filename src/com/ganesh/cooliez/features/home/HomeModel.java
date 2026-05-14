@@ -1,32 +1,22 @@
 package com.ganesh.cooliez.features.home;
 
+import com.ganesh.cooliez.features.Manager.taskmanagement.TaskCreationView;
+import com.ganesh.cooliez.features.Manager.taskmanagement.TaskDeletionView;
 import com.ganesh.cooliez.features.home.EmployeeProfile.EmployeeProfileModel;
 import com.ganesh.cooliez.features.home.EmployeeProfile.EmployeeProfileView;
+import com.ganesh.cooliez.features.Manager.ManagerFeaturesView;
 
 public class HomeModel {
     private HomeView homeView;
     private EmployeeProfileView employeeProfileView;
-    private EmployeeProfileModel employeeProfileModel;
+    private TaskCreationView taskCreationView;
+    private TaskDeletionView taskDeletionView;
 
     HomeModel(HomeView homeView) {
         this.homeView = homeView;
         employeeProfileView = new EmployeeProfileView();
-    }
-
-    public void viewAssignedTasks(String email) {
-
-    }
-
-    public void updateTaskStatus(long taskId) {
-
-    }
-
-    public void viewAlerts(String email) {
-
-    }
-
-    public void viewProfile(String email) {
-        employeeProfileView.showEmployeeDetails(email);
+        taskCreationView=new TaskCreationView();
+        taskDeletionView=new TaskDeletionView();
     }
 
     public void listAllEmployees() {
@@ -34,7 +24,7 @@ public class HomeModel {
     }
 
     public void assignNewTask(String managerEmail) {
-
+        taskCreationView.promptNewTask(managerEmail);
     }
 
     public void viewAllTaskProgress() {
@@ -42,14 +32,9 @@ public class HomeModel {
     }
 
     public void manageAlerts() {
-
     }
 
-    public void updateEmployeeStatus() {
-        employeeProfileView.promptUpdate();
-    }
-
-    public void deleteEmployee() {
-        employeeProfileView.promptDeletion();
+    public void deleteTask() {
+        taskDeletionView.promptTaskDeletion();
     }
 }

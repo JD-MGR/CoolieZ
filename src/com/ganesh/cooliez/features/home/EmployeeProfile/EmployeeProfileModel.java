@@ -27,26 +27,4 @@ public class EmployeeProfileModel {
         employeeProfileView.displayAllEmployees(employee);
         return !employee.isEmpty();
     }
-
-    public boolean getEmployeeStatus(String email) {
-        Employee employee = employeeRepository.getEmployeeStatus(email);
-        if (employee == null) {
-            System.out.println("No employee found with email: " + email);
-            return false;
-        }
-        if (employeeProfileView.changeEmployeeStatus(employee)) {
-            if(employee.getStatus().toString().equals("ACTIVE")){
-                employee.setStatus(Employee.Status.INACTIVE);
-            }
-            else if(employee.getStatus().toString().equals("INACTIVE")){
-                employee.setStatus(Employee.Status.ACTIVE);
-            }
-           return employeeRepository.changeEmployeeStatus(employee);
-        }
-        return false;
-    }
-
-    public boolean deleteEmployee(String email) {
-        return employeeRepository.deleteEmployee(email);
-    }
 }

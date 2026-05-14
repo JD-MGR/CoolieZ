@@ -49,7 +49,7 @@ public class SignUpView {
     private String promptEmail(){
         while(true) {
             System.out.println("Enter your Email : ");
-            String email = scanner.next();
+            String email = scanner.nextLine();
             if(signUpModel.validateEmail(email)) return email.trim();
         }
     }
