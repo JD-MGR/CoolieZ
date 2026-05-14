@@ -21,3 +21,22 @@ drop table userLogin;
 select * from users;
 
 select *from userLogin;
+
+create table tasks(
+    taskId bigint primary key auto_increment,
+    taskName varchar(30),
+    assignedBy bigint not null ,
+    assignedTo bigint not null ,
+    createdAt bigint not null ,
+    dueDate bigint not null ,
+    status  enum('COMPLETED','INPROGRESS','CREATED') default 'CREATED',
+    description varchar(200),
+    foreign key (assignedBy)  references users (employeeId),
+    foreign key (assignedTo)  references users (employeeId)
+);
+
+select * from tasks;
+
+drop table tasks;
+
+truncate tasks;
